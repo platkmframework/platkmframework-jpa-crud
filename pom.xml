@@ -3,47 +3,54 @@
   <groupId>org.platkmframework</groupId>
   <artifactId>platkmframework-jpa-crud</artifactId>
   <version>1.0.0-beta</version> 
-  <build> 
-    <plugins>
-      <plugin>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.8.0</version>
-        <configuration>
-          <release>20</release>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
-<dependencies>
-	<dependency>
-	  <groupId>org.platkmframework</groupId>
-	  <artifactId>platkmframework-jpa-orm</artifactId>
-	  <version>1.0.0-beta</version> 
-	</dependency>
+<properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding> 
+  </properties>
+  
+    <build>
+        <plugins>
+	      <plugin>
+	        <artifactId>maven-compiler-plugin</artifactId>
+	        <version>3.8.0</version>
+	        <configuration>
+	          <release>20</release>
+	        </configuration>
+	      </plugin>			
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>3.1.0</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin> 
+        </plugins>
+    </build>  
+    
+	<distributionManagement>
+		<repository>
+			<id>platkmframework</id>
+			<name>Releases</name>
+			<url>https://nexus.platkmframework.org/repository/platkmframework-releases/</url>
+		</repository>
+	 
+		<snapshotRepository>
+			<id>platkmframework</id>
+			<name>Snapshot</name>
+			<url>https://nexus.platkmframework.org/repository/platkmframework-snapshot/</url>
+		</snapshotRepository>
+	
+	</distributionManagement>
+  <dependencies> 
 	<dependency>
 	  <groupId>org.platkmframework</groupId>
 	  <artifactId>platkmframework-jpa</artifactId>
 	  <version>1.0.0-beta</version> 
-	</dependency>
-	<dependency>
-	  <groupId>org.platkmframework</groupId>
-	  <artifactId>platkmframework-database-filter</artifactId>
-	    <version>1.0.0-beta</version>
-	</dependency>	
-	<dependency>
-	  <groupId>org.platkmframework</groupId>
-	  <artifactId>platkmframework-common-service</artifactId>
-	    <version>1.0.0-beta</version>
-	</dependency>
-	<dependency>
-	  <groupId>org.platkmframework</groupId>
-	  <artifactId>platkmframework-database-query-common</artifactId>
-	    <version>1.0.0-beta</version>
-	</dependency>	
-	<dependency>
-	    <groupId>jakarta.validation</groupId>
-	    <artifactId>jakarta.validation-api</artifactId>
-	    <version>3.0.2</version>
-	</dependency>
+	</dependency>	 
 </dependencies>
 </project>

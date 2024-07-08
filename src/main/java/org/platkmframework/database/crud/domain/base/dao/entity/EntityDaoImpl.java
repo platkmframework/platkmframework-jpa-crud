@@ -21,10 +21,8 @@ package org.platkmframework.database.crud.domain.base.dao.entity;
 import java.lang.reflect.Field;
 import java.util.List;
 
-import javax.persistence.Query;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.platkmframework.common.domain.filter.FilterResult;
 import org.platkmframework.common.domain.filter.criteria.DeleteCriteriaEntity;
 import org.platkmframework.common.domain.filter.criteria.FilterCriteria;
@@ -36,7 +34,9 @@ import org.platkmframework.common.domain.filter.info.FilterDataType;
 import org.platkmframework.database.query.common.exception.DaoException;
 import org.platkmframework.database.query.manager.QueryManager;
 import org.platkmframework.jpa.util.DaoUtil;
-import org.platkmframework.util.reflection.ReflectionUtil; 
+import org.platkmframework.util.reflection.ReflectionUtil;
+
+import jakarta.persistence.Query; 
 
 /**
  *   Author: 
@@ -48,7 +48,7 @@ import org.platkmframework.util.reflection.ReflectionUtil;
  **/
 public abstract class EntityDaoImpl<E,I> extends BaseEntityDao<E> implements EntityDao<E,I>{
 	
-	private static final Logger logger = LogManager.getLogger(EntityDaoImpl.class);	 
+	private static Logger logger = LoggerFactory.getLogger(EntityDaoImpl.class);
 	 	      
 	protected List<Field> fields;
 	
@@ -87,7 +87,7 @@ public abstract class EntityDaoImpl<E,I> extends BaseEntityDao<E> implements Ent
 			return findOne(filterCriteria, returnClass);
 			
 		} catch (Exception e) {
-			logger.error(e); 
+			logger.error(e.getMessage()); 
 			throw new DaoException("No se pudo realizar el proceso, int�ntelo m�s tarde");
 		} 
 	}
@@ -102,7 +102,7 @@ public abstract class EntityDaoImpl<E,I> extends BaseEntityDao<E> implements Ent
 			return getPlatkmEntityManager().getQueryDao().select(searchCriteria, null, this.entityClass);
 			
 		} catch (DaoException e) {
-			logger.error(e); 
+			logger.error(e.getMessage()); 
 			throw new DaoException("No se pudo realizar el proceso, int�ntelo m�s tarde");
 		}
 		  
@@ -132,7 +132,7 @@ public abstract class EntityDaoImpl<E,I> extends BaseEntityDao<E> implements Ent
 			return find(filterCriteria, returnClass); 
 		
 		} catch (Exception e) {
-			logger.error(e); 
+			logger.error(e.getMessage()); 
 			throw new DaoException(" error cargando el registro");
 		} 
 	}	
@@ -245,7 +245,7 @@ public abstract class EntityDaoImpl<E,I> extends BaseEntityDao<E> implements Ent
 			return  find(filterCriteria, returnClass);
 			//return queryDao.select(filterCriteria, null, returnClass);
 		} catch (DaoException e) {
-			logger.error(e); 
+			logger.error(e.getMessage()); 
 			throw new DaoException("error");
 		} 	 
 	}

@@ -30,6 +30,7 @@ public class OptionValue {
 	private Object key;
 	private String text;
 	private boolean selected;
+	private String data;
 	
 	public OptionValue() {
 		super();
@@ -58,6 +59,14 @@ public class OptionValue {
 
 	public void setSelected(boolean selected) {
 		this.selected = selected;
+	}
+
+	public String getData() {
+		return data;
+	}
+
+	public void setData(String data) {
+		this.data = data;
 	} 
 
 }

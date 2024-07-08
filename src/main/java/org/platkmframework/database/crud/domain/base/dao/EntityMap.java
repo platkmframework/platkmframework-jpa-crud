@@ -22,13 +22,13 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Column;
-
 import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.platkmframework.util.error.InvocationException;
 import org.platkmframework.util.reflection.ReflectionUtil;
+
+import jakarta.persistence.Column;
 
 
 /**
@@ -39,7 +39,7 @@ import org.platkmframework.util.reflection.ReflectionUtil;
  **/
 public class EntityMap {
 	
-	private static final Logger logger = LogManager.getLogger(EntityMap.class);
+	private static Logger logger = LoggerFactory.getLogger(EntityMap.class);
 	
 	
 	public static <F> F map(Object sourceObj, Class<F> targetClass) {
@@ -50,7 +50,7 @@ public class EntityMap {
 			return map(sourceObj, target);
 			
 		} catch (InvocationException e) { 
-			logger.error(e,e);
+			logger.error(e.getMessage());
 			return null;
 		} 
 		
@@ -112,7 +112,7 @@ public class EntityMap {
 			return target;
 			
 		} catch (Exception e) {
-			logger.error(e,e);
+			logger.error(e.getMessage());
 			return null;
 		} 
 	}

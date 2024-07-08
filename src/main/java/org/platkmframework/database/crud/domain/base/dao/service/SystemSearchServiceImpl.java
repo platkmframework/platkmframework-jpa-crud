@@ -12,10 +12,10 @@ import org.platkmframework.common.domain.filter.criteria.FilterCriteria;
 import org.platkmframework.common.domain.filter.criteria.SearchCriteria;
 import org.platkmframework.common.domain.filter.criteria.WhereCriteria;
 import org.platkmframework.common.domain.filter.enumerator.ConditionOperator;
-import org.platkmframework.comon.service.exception.ServiceException;
 import org.platkmframework.content.ObjectContainer;
 import org.platkmframework.database.crud.domain.base.dao.SystemSearchDAO;
 import org.platkmframework.database.crud.domain.base.dao.entity.OptionValue;
+import org.platkmframework.database.crud.domain.base.exception.CrudException;
 import org.platkmframework.database.query.common.exception.DaoException;
 import org.platkmframework.database.query.common.vo.CustomResultInfo;
 import org.platkmframework.jpa.util.DaoUtil;
@@ -27,7 +27,7 @@ public class SystemSearchServiceImpl implements SystemSearchService{
 	private SystemSearchDAO  systemSearchDAO;
 	
 	@Override
-	public FilterResult<?> search(FilterCriteria filter) throws ServiceException, DaoException {
+	public FilterResult<?> search(FilterCriteria filter) throws CrudException, DaoException {
 		
 		Object ob = ObjectContainer.instance().getSearchMapInfo(filter.getCode());
 		if(ob instanceof ESearchFilter) {
@@ -38,7 +38,7 @@ public class SystemSearchServiceImpl implements SystemSearchService{
 	}
 	
 	@Override
-	public FilterResult<?> search(WhereCriteria filter, List<Object> parameters, String...replacements) throws ServiceException, DaoException {
+	public FilterResult<?> search(WhereCriteria filter, List<Object> parameters, String...replacements) throws CrudException, DaoException {
 		
 		Object ob = ObjectContainer.instance().getSearchMapInfo(filter.getCode());
 		if(ob instanceof QSearchFilter) {
@@ -49,11 +49,11 @@ public class SystemSearchServiceImpl implements SystemSearchService{
 	}
 	
 	@Override
-	public FilterResult<?> search(WhereCriteria filter, String...replacements) throws ServiceException, DaoException {
+	public FilterResult<?> search(WhereCriteria filter, String...replacements) throws CrudException, DaoException {
 		return search(filter, null, replacements);
 	}
  
-	public List<OptionValue> options(WhereCriteria filter) throws ServiceException, DaoException {
+	public List<OptionValue> options(WhereCriteria filter) throws CrudException, DaoException {
 	
 		Object ob = ObjectContainer.instance().getSearchMapInfo(filter.getCode());
 		if(ob instanceof SelectOption) {

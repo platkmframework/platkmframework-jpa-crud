@@ -11,7 +11,7 @@ import org.platkmframework.common.domain.filter.enumerator.InnerOperator;
 import org.platkmframework.common.domain.filter.info.FilterData;
 import org.platkmframework.common.domain.filter.info.FilterDataType;
 import org.platkmframework.database.query.common.exception.DaoException;
-import org.platkmframework.jpa.base.PlatkmEntityManager;
+import org.platkmframework.jpa.base.PlatkmORMEntityManager;
 import org.platkmframework.jpa.base.PlatkmQuery;
 import org.platkmframework.jpa.util.DaoUtil;
  
@@ -103,6 +103,6 @@ public abstract class BaseEntityDao<E> implements BaseEntityDaoI<E> {
   
 	}
 	
-	public abstract PlatkmEntityManager getPlatkmEntityManager();
+	public abstract PlatkmORMEntityManager getPlatkmEntityManager();
 
 }

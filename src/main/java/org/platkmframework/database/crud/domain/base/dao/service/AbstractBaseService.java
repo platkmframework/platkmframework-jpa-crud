@@ -20,8 +20,8 @@ package org.platkmframework.database.crud.domain.base.dao.service;
 
 import java.util.List;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.platkmframework.common.domain.filter.FilterResult;
 import org.platkmframework.common.domain.filter.criteria.FilterCriteria;
 import org.platkmframework.common.domain.filter.criteria.SearchCriteria;
@@ -41,7 +41,7 @@ import org.platkmframework.jpa.exception.DatabaseConnectionException;
  **/
 public abstract class AbstractBaseService<E,VO, I> implements BaseService<VO, I> {
 	
-	private static final Logger logger = LogManager.getLogger(AbstractBaseService.class);
+	private static Logger logger = LoggerFactory.getLogger(AbstractBaseService.class);
 
 	protected EntityDaoImpl<E, I> reposity;
 	
@@ -59,7 +59,7 @@ public abstract class AbstractBaseService<E,VO, I> implements BaseService<VO, I>
 		try {
 			return reposity.search(filter, null, returnClass);
 		} catch (DaoException e) { 
-			logger.error(e); 
+			logger.error(e.getMessage()); 
 			throw new DaoException(e.getMessage());
 		}
 	}  
@@ -71,7 +71,7 @@ public abstract class AbstractBaseService<E,VO, I> implements BaseService<VO, I>
 			reposity.insert(entity);
 			//vo.setId(entity.getId());
 		} catch (DatabaseConnectionException e) {
-			logger.error(e); 
+			logger.error(e.getMessage());  
 			throw new DaoException(e.getMessage());
 		}
 	}
@@ -84,7 +84,7 @@ public abstract class AbstractBaseService<E,VO, I> implements BaseService<VO, I>
 			EntityMap.map(vo, entity);
 			reposity.update(entity);
 		} catch (DatabaseConnectionException e) {
-			logger.error(e); ;
+			logger.error(e.getMessage());  ;
 			throw new DaoException(e.getMessage());
 		}
 	}
@@ -94,7 +94,7 @@ public abstract class AbstractBaseService<E,VO, I> implements BaseService<VO, I>
 		try {
 			reposity.removeById(id);
 		} catch (DatabaseConnectionException e) { 
-			logger.error(e); 
+			logger.error(e.getMessage());  
 			throw new DaoException(e.getMessage());
 		}
 	}
@@ -106,7 +106,7 @@ public abstract class AbstractBaseService<E,VO, I> implements BaseService<VO, I>
 			E entity = EntityMap.map(vo, this.reposity.getEntityClass()); 
 			reposity.save(entity);
 		} catch (DatabaseConnectionException e) {
-			logger.error(e);
+			logger.error(e.getMessage()); 
 			throw new DaoException(e.getMessage());
 		}
 	}
@@ -117,7 +117,7 @@ public abstract class AbstractBaseService<E,VO, I> implements BaseService<VO, I>
 		try { 
 			return reposity.load(id, this.returnClass); 
 		} catch (DaoException e) {
-			logger.error(e);
+			logger.error(e.getMessage()); 
 			throw new DaoException(e.getMessage());
 		}
 	}
@@ -128,7 +128,7 @@ public abstract class AbstractBaseService<E,VO, I> implements BaseService<VO, I>
 		try {
 			return reposity.selectAll(this.returnClass);
 		} catch (DaoException e) {
-			logger.error(e);
+			logger.error(e.getMessage()); 
 			throw new DaoException(e.getMessage());
 		}
 	}

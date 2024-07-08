@@ -1,22 +1,22 @@
 package org.platkmframework.database.crud.domain.base.dao;
 
-import javax.persistence.PersistenceContext;
-
 import org.platkmframework.annotation.Repository;
 import org.platkmframework.common.domain.filter.FilterResult;
 import org.platkmframework.common.domain.filter.criteria.FilterCriteria;
 import org.platkmframework.database.crud.domain.base.dao.entity.BaseEntityDao;
 import org.platkmframework.database.query.common.exception.DaoException;
-import org.platkmframework.jpa.base.PlatkmEntityManager;
+import org.platkmframework.jpa.base.PlatkmORMEntityManager;
+
+import jakarta.persistence.PersistenceContext;
 
 @Repository
 public class SystemSearchDAO extends BaseEntityDao   {
 	
 	@PersistenceContext(unitName = "${platkmframework_persistence_unit}")
-	private PlatkmEntityManager platkmEntityManager;
+	private PlatkmORMEntityManager platkmEntityManager;
 
 	@Override
-	public PlatkmEntityManager getPlatkmEntityManager() {
+	public PlatkmORMEntityManager getPlatkmEntityManager() {
 		return platkmEntityManager;
 	}
 

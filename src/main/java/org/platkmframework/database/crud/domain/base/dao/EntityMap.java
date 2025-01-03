@@ -1,138 +1,156 @@
-/*******************************************************************************
- * Copyright(c) 2023 the original author Eduardo Iglesias Taylor.
+/**
+ * ****************************************************************************
+ *  Copyright(c) 2023 the original author Eduardo Iglesias Taylor.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
  *
- * 	 https://www.apache.org/licenses/LICENSE-2.0
+ *  	 https://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
  *
- * Contributors:
- * 	Eduardo Iglesias Taylor - initial API and implementation
- *******************************************************************************/
+ *  Contributors:
+ *  	Eduardo Iglesias Taylor - initial API and implementation
+ * *****************************************************************************
+ */
 package org.platkmframework.database.crud.domain.base.dao;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.platkmframework.util.error.InvocationException;
 import org.platkmframework.util.reflection.ReflectionUtil;
-
 import jakarta.persistence.Column;
 
-
 /**
- *   Author: 
+ *   Author:
  *     Eduardo Iglesias
- *   Contributors: 
+ *   Contributors:
  *   	Eduardo Iglesias - initial API and implementation
- **/
+ */
 public class EntityMap {
-	
-	private static Logger logger = LoggerFactory.getLogger(EntityMap.class);
-	
-	
-	public static <F> F map(Object sourceObj, Class<F> targetClass) {
 
-		try {
-			
-			F target = ReflectionUtil.createInstance1(targetClass);
-			return map(sourceObj, target);
-			
-		} catch (InvocationException e) { 
-			logger.error(e.getMessage());
-			return null;
-		} 
-		
-	}
-	
-	public static <F> F map(Object sourceObj, F target) {
-		
-		try {
-	  
-			List<Field> targetFields =  ReflectionUtil.getAllFieldHeritage(target.getClass());
-			List<Field> sourceFields =  ReflectionUtil.getAllFieldHeritage(sourceObj.getClass());
-			if(targetFields != null){
-				Field targetField;   
-				String targetColumnName;
-				String targetFieldName; 
-				Column column;
-				Field sourceFieldFound;
-				boolean targetAccessValue = false;
-				boolean sourceAcessValue = false;
-				for (int i = 0; i < targetFields.size(); i++) {
-					
-					targetColumnName = null;
-					targetField     = targetFields.get(i);
-					targetFieldName = targetField.getName();
-					
-					if(targetField.isAnnotationPresent(Column.class)) {
-						column = targetField.getAnnotation(Column.class);
-						targetColumnName = column.name();  
-					} 
-					
-					sourceFieldFound = null;
-					for (Field sourceField : sourceFields) {
-						if(StringUtils.isNotBlank(targetColumnName) && 
-								sourceField.isAnnotationPresent(Column.class) && 
-										targetColumnName.equals(sourceField.getAnnotation(Column.class).name())) {
-							sourceFieldFound = sourceField;
-							break;
-						}else if(sourceField.getName().equals(targetFieldName)){
-							sourceFieldFound = sourceField;
-							break;
-						} 
-					}
-					if(sourceFieldFound == null) {
-						logger.warn("attribute name not found " + targetFieldName);
-					}else {
-						targetAccessValue = targetField.canAccess(target);
-						targetField.setAccessible(true);  
-						
-						sourceAcessValue = sourceFieldFound.canAccess(sourceObj);
-						sourceFieldFound.setAccessible(true);
-						
-					    targetField.set(target, sourceFieldFound.get(sourceObj)); 
-					    
-					    targetField.setAccessible(targetAccessValue); 
-					    sourceFieldFound.setAccessible(sourceAcessValue); 
-					}	
-				}
-			}	
-			return target;
-			
-		} catch (Exception e) {
-			logger.error(e.getMessage());
-			return null;
-		} 
-	}
-	 
-	public static <E> List<E>  mapperArray(Object[] list, Class<E> class1) 
-	{
-		List<E> listResult = new ArrayList<>();
-		if(list != null) {
-			for (int i = 0; i < list.length; i++) {
-				listResult.add(map(list[i], class1));
-			}
-		} 
-	    return listResult;
-	}	
-	
-	public static <E> List<E> mapperList(List<?> list, Class<E> class1) 
-	{
-		List<E> listResult = new ArrayList<>();
-		list.stream().forEach(fd -> listResult.add(map(fd, class1)));
-	    return listResult;
-	}
+    /**
+     * EntityMap
+     */
+    public EntityMap() {
+        super();
+    }
 
+    /**
+     * Atributo logger
+     */
+    private static Logger logger = LoggerFactory.getLogger(EntityMap.class);
+
+    /**
+     * map
+     * @param <F> F
+     * @param sourceObj sourceObj
+     * @param targetClass targetClass
+     * @return F F
+     */
+    public static <F> F map(Object sourceObj, Class<F> targetClass) {
+        try {
+            F target = ReflectionUtil.createInstance1(targetClass);
+            return map(sourceObj, target);
+        } catch (InvocationException e) {
+            logger.error(e.getMessage());
+            return null;
+        }
+    }
+
+    /**
+     * map
+     * @param <F> F
+     * @param sourceObj sourceObj
+     * @param target target
+     * @return F F
+     */
+    public static <F> F map(Object sourceObj, F target) {
+        try {
+            List<Field> targetFields = ReflectionUtil.getAllFieldHeritage(target.getClass());
+            List<Field> sourceFields = ReflectionUtil.getAllFieldHeritage(sourceObj.getClass());
+            if (targetFields != null) {
+                Field targetField;
+                String targetColumnName;
+                String targetFieldName;
+                Column column;
+                Field sourceFieldFound;
+                boolean targetAccessValue = false;
+                boolean sourceAcessValue = false;
+                for (int i = 0; i < targetFields.size(); i++) {
+                    targetColumnName = null;
+                    targetField = targetFields.get(i);
+                    targetFieldName = targetField.getName();
+                    if (targetField.isAnnotationPresent(Column.class)) {
+                        column = targetField.getAnnotation(Column.class);
+                        targetColumnName = column.name();
+                    }
+                    sourceFieldFound = null;
+                    for (Field sourceField : sourceFields) {
+                        if (StringUtils.isNotBlank(targetColumnName) && sourceField.isAnnotationPresent(Column.class) && targetColumnName.equals(sourceField.getAnnotation(Column.class).name())) {
+                            sourceFieldFound = sourceField;
+                            break;
+                        } else if (sourceField.getName().equals(targetFieldName)) {
+                            sourceFieldFound = sourceField;
+                            break;
+                        }
+                    }
+                    if (sourceFieldFound == null) {
+                        logger.warn("attribute name not found " + targetFieldName);
+                    } else {
+                        targetAccessValue = targetField.canAccess(target);
+                        targetField.setAccessible(true);
+                        sourceAcessValue = sourceFieldFound.canAccess(sourceObj);
+                        sourceFieldFound.setAccessible(true);
+                        targetField.set(target, sourceFieldFound.get(sourceObj));
+                        targetField.setAccessible(targetAccessValue);
+                        sourceFieldFound.setAccessible(sourceAcessValue);
+                    }
+                }
+            }
+            return target;
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return null;
+        }
+    }
+
+    /**
+     * mapperArray
+     * @param <E> E
+     * @param list list
+     * @param class1 class1
+     * @return List
+     */
+    public static <E> List<E> mapperArray(Object[] list, Class<E> class1) {
+        List<E> listResult = new ArrayList<>();
+        if (list != null) {
+            for (int i = 0; i < list.length; i++) {
+                listResult.add(map(list[i], class1));
+            }
+        }
+        return listResult;
+    }
+
+    /**
+     * mapperList
+     * @param <E> E
+     * @param list list
+     * @param class1 class1
+     * @return List
+     */
+    public static <E> List<E> mapperList(List<?> list, Class<E> class1) {
+        List<E> listResult = new ArrayList<>();
+        list.stream().forEach(fd -> listResult.add(map(fd, class1)));
+        return listResult;
+    }
 }
